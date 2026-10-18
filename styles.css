@@ -123,10 +123,10 @@ a:hover { color: var(--brand); }
   font-weight: 700;
   box-shadow: 0 1px 3px rgba(0,0,0,0.4);
 }
-.ows-pin.ows-hq .pin-inner { background: var(--brand); }
+.ows-pin.ows-reference .pin-inner { background: var(--brand); }
 .ows-pin.ows-county .pin-inner { background: #c98a3a; font-size: 11px; }
 .ows-pin.ows-town .pin-inner { background: var(--brand-ink); font-size: 10px; }
-.ows-pin.ows-out .pin-inner { background: var(--out); font-size: 12px; }
+.ows-pin.ows-excluded .pin-inner { background: var(--out); font-size: 12px; }
 
 .site-footer {
   background: var(--brand-ink);
@@ -136,3 +136,8 @@ a:hover { color: var(--brand); }
   text-align: center;
 }
 .site-footer a { color: var(--brand-bg); }
+
+[hidden] { display: none !important; }
+#load-map { font: inherit; padding: .7rem 1rem; background: var(--brand); color: white; border: 0; border-radius: 4px; cursor: pointer; }
+#load-map:disabled { opacity: .6; cursor: default; }
+#map-status { min-height: 2rem; }

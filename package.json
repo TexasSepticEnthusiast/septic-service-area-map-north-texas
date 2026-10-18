@@ -1,0 +1,12 @@
+{
+  "name": "septic-service-area-map-north-texas",
+  "private": true,
+  "scripts": {
+    "test": "node --test test/unit.test.cjs",
+    "test:browser": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1",
+    "leaflet": "1.9.4"
+  }
+}

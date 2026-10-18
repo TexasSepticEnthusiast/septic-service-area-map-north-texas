@@ -1,59 +1,64 @@
-# septic-service-area-map-north-texas
+# Out West Septic priority-area map
 
-A single-page interactive map showing the Out West Septic service area. Seven counties in rural North Texas, plus the four key towns. Parker and Tarrant are flagged as out of area. Drop the directory on any static host.
+An interactive reference map for discussing property locations around Palo Pinto County and nearby priority areas. `OutWestSepticServiceAreaMap` validates configured points, renders their names as text, and fits all displayed markers into the map view.
 
-The map uses Leaflet and OpenStreetMap tiles. No API key. No account. No tracking. The data (county centroids, town coordinates, headquarters pin) is in a single `data.js` file so you can edit it without touching the map logic.
+Pins are approximate references. They are not official county boundaries, an office location, a service radius, or a guarantee that a property is served. The map does not calculate property eligibility. Confirm the actual property location and county with Out West Septic.
 
-## What's in it
+## Run locally
 
-- `index.html` — the page chrome and the OWS branding
-- `data.js` — the service area data (county centroids, towns, HQ, out-of-area)
-- `map.js` — the Leaflet initialization and the pin rendering
-- `styles.css` — the visual style, including the custom map pins
-
-## Run it locally
-
-```
-cd septic-service-area-map-north-texas
-python -m http.server 8000
+```sh
+python -m http.server 8000 --bind 127.0.0.1
 ```
 
-Open `http://localhost:8000`.
+Open `http://127.0.0.1:8000`. No build step is needed for the static site.
 
-## Deploy it
+## Data and source
 
-The map is a static site. Drop the four files on any host. Netlify, GitHub Pages, Cloudflare Pages, S3 — all work. The Leaflet CSS and JS load from `unpkg.com`, so the host only needs to serve the four files.
-
-## Edit the data
-
-Open `data.js`. The shape is:
+Edit `data.js` to change the approximate reference points. It exposes `OutWestSepticAreaData` and the browser-compatible `window.OWS_DATA` value. The optional groups are:
 
 ```js
-window.OWS_DATA = {
-  hq: { name, lat, lon, note },
-  counties: [{ name, lat, lon, seat }, ...],
-  towns: [{ name, lat, lon }, ...],
-  outOfArea: [{ name, lat, lon }, ...]
-};
+{
+  reference: { name: "Example reference", lat: 32.78, lon: -98.32 },
+  counties: [{ name: "Palo Pinto County", lat: 32.75, lon: -98.30 }],
+  towns: [],
+  outOfArea: []
+}
 ```
 
-Add a county, change a town, update the HQ pin — all without touching the map logic. The `map.js` reads `OWS_DATA` and renders.
+The `reference` field replaces the former unsupported `hq` claim. Coordinates must be finite numeric WGS84 latitude/longitude values in their valid ranges. Empty data disables the map with an explanation; invalid data is rejected rather than silently misplotted. Labels are literal text, including in Leaflet popups. Do not publish customer addresses, access information, or other private notes in this file.
 
-## What the colors mean
+Priority-area wording and the displayed phone number were checked against the [Out West Septic official website](https://outwestseptic.com/) on October 18, 2026. Its map description explicitly treats the working area as an illustration and asks visitors to confirm the actual property location and county. The included coordinates are approximate project reference points, not surveyed or authoritative geographic data. Parker and Tarrant appear only as excluded targets.
 
-- Red star: HQ
-- Orange diamond: served county (centroid shown, we work the whole county)
-- Dark red dot: served town
-- Gray X: out of area (Parker and Tarrant)
+Marker labels describe their role:
 
-The legend at the bottom of the page spells this out.
+- **R:** approximate reference location, not an office address.
+- **C:** priority county reference, without a whole-county service guarantee.
+- **T:** community reference; confirm the property's actual county.
+- **X:** excluded target.
 
-## Limitations
+## External resources and fallback
 
-- Centroids are approximate. We don't claim to only serve within 5 miles of the dot.
-- The map uses OpenStreetMap tiles. If you're offline, the map shows a grey background.
-- No county boundary polygons. Drawing real boundaries would require a GeoJSON file (~3 MB for the seven counties). The marker approach is lighter and gets the point across.
+The location list renders before any map-provider requests. Clicking **Load interactive map** fetches pinned Leaflet 1.9.4 JavaScript/CSS from `unpkg.com`, using integrity checks, then requests OpenStreetMap tiles. These providers receive network information such as IP addresses and requested map views. The page does not request device geolocation or include analytics.
+
+Nearby pins can overlap at the overview zoom. Zoom in, or focus a named marker with the keyboard and press Enter to open its details.
+
+If Leaflet cannot load, the list remains available and the button permits retry. Tile failures are reported while markers and the list remain usable. With JavaScript disabled, the page supplies a brief fallback and the official contact link. This is an online base map; it does not provide offline geographic data.
+
+Leaflet accepts HTML strings for popups. This implementation instead passes DOM elements populated with `textContent`, as supported by the [Leaflet reference](https://leafletjs.com/reference.html#layer-bindpopup), so configured labels cannot become executable popup markup.
+
+## Tests
+
+Node 22 or newer:
+
+```sh
+npm ci
+npm test
+npx playwright install chromium --only-shell
+npm run test:browser
+```
+
+Node tests cover data validation and geographic boundaries. Chromium tests load the real pinned Leaflet library from the local test dependency, intercept tile/CDN requests, and check marker visibility, inert markup, empty/invalid data, provider failures, optional loading, and mobile layout. The tests do not send location requests to public map providers. CI pins action commits and dependency versions; local screenshots and test output stay under ignored `output/playwright/`.
 
 ## License
 
-MIT. See `LICENSE`. Leaflet is BSD-2. OpenStreetMap data is ODbL.
+MIT. See `LICENSE`. Leaflet is BSD-2-Clause; OpenStreetMap data is ODbL.

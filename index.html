@@ -4,8 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Service area — Out West Septic</title>
-  <meta name="description" content="Out West Septic serves Palo Pinto, Hood, Erath, Stephens, Young, Jack, and Eastland counties in North Texas. Map view of the territory." />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <meta name="description" content="Out West Septic priority-area reference map around Palo Pinto County. Approximate markers help discuss a location; confirm service for the actual property." />
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%238B2E2E'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='Georgia,serif' font-size='18' font-weight='700' fill='%23F4E9D8'%3EOW%3C/text%3E%3C/svg%3E" />
 </head>
@@ -16,7 +15,7 @@
         <span class="brand-mark">OW</span>
         <span class="brand-text">
           <strong>Out West Septic</strong>
-          <span class="brand-sub">Lone Camp, TX &middot; TCEQ OSSF Installer I &middot; OS0041298</span>
+          <span class="brand-sub">Palo Pinto County and nearby priority areas</span>
         </span>
       </div>
       <div class="header-cta">
@@ -28,34 +27,38 @@
   <main>
     <section class="intro">
       <div class="container">
-        <h1>Where we work</h1>
+        <h1>Explore the priority areas</h1>
         <p class="lede">
-          We install conventional gravity septic systems across seven counties in rural North Texas. The service area is centered on Palo Pinto County and reaches into the surrounding counties. We do not work in Parker or Tarrant.
+          These approximate markers help you discuss a property location with Out West Septic. They are not official county boundaries, office addresses, a service radius, or confirmation that a specific property is served. Confirm the actual property location and county directly. Parker and Tarrant are excluded from the configured targets.
         </p>
-        <ul class="area-list">
-          <li><strong>Counties:</strong> Palo Pinto, Hood, Erath, Stephens, Young, Jack, Eastland</li>
-          <li><strong>Towns:</strong> Mineral Wells, Graford, Possum Kingdom Lake, Eastland</li>
-          <li><strong>Out of area:</strong> Parker County, Tarrant County</li>
-        </ul>
+        <h2>Location references</h2>
+        <ul id="area-list" class="area-list"></ul>
+        <noscript>Priority areas include Palo Pinto County and nearby rural communities. Use the official contact link to confirm a property location.</noscript>
       </div>
     </section>
 
     <section class="map-section">
-      <div id="map" role="region" aria-label="Service area map"></div>
+      <div class="container">
+        <p>Loading the map connects to unpkg.com for Leaflet and OpenStreetMap for map tiles. Those providers receive network information such as your IP address and requested map views. No device location is requested.</p>
+        <button id="load-map" type="button" disabled>Load interactive map</button>
+        <p id="map-status" role="status" aria-live="polite">Preparing the location list...</p>
+      </div>
+      <div id="map" hidden role="region" aria-label="Approximate priority-area reference map"></div>
     </section>
 
     <section class="legend">
       <div class="container">
         <h2>Map legend</h2>
         <ul>
-          <li><span class="dot dot-hq"></span> Lone Camp, TX — Out West Septic headquarters</li>
-          <li><span class="dot dot-county"></span> Served counties (centroid shown)</li>
-          <li><span class="dot dot-town"></span> Served towns</li>
-          <li><span class="dot dot-out"></span> Not in service area</li>
+          <li><span class="dot dot-hq"></span> R: Approximate reference location</li>
+          <li><span class="dot dot-county"></span> C: Priority county reference</li>
+          <li><span class="dot dot-town"></span> T: Community reference</li>
+          <li><span class="dot dot-out"></span> X: Excluded target</li>
         </ul>
         <p class="small faint">
-          Centroids are approximate. We work the whole county, not just the dot. Click any marker for details.
+          Pins are illustrative coordinates, not surveyed locations. Click a marker for its scope. No property eligibility is calculated.
         </p>
+        <p class="small">Priority-area and contact source: <a href="https://outwestseptic.com/">Out West Septic official website</a>, checked October 18, 2026. Confirm current availability directly.</p>
       </div>
     </section>
   </main>
@@ -64,13 +67,11 @@
     <div class="container">
       <p>
         <strong>Out West Septic</strong> &middot; outwestseptic.com &middot; <a href="tel:9404520598">940.452.0598</a><br />
-        TCEQ OSSF Installer I, OS0041298 &middot; Lone Camp, TX<br />
-        Serving Palo Pinto, Hood, Erath, Stephens, Young, Jack, and Eastland counties plus Mineral Wells, Graford, Possum Kingdom Lake, and Eastland.
+        <a href="https://outwestseptic.com/">Confirm current services and contact details</a>.
       </p>
     </div>
   </footer>
 
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="data.js"></script>
   <script src="map.js"></script>
 </body>
